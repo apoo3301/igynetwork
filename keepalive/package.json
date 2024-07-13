@@ -1,0 +1,14 @@
+{
+  "name": "keepalivesys",
+  "version": "1.0.0",
+  "description": "igy marina official keepalive systeme for network monitoring.",
+  "main": "src/monitor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "apoo",
+  "license": "MIT",
+  "dependencies": {
+    "ping": "^0.4.4"
+  }
+}
