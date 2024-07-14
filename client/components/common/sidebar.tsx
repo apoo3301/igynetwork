@@ -9,7 +9,7 @@ import {
     CommandSeparator,
     CommandShortcut,
   } from "@/components/ui/command"
-import { Folders, LayoutDashboard, Newspaper, Settings, User } from "lucide-react";
+import { Folders, LayoutDashboard, Newspaper, ScreenShareIcon, Settings, User } from "lucide-react";
 import Link from "next/link";
   
 
@@ -31,6 +31,10 @@ const Sidebar = () => {
                 <CommandItem>
                     <Folders className="mr-2 h-4 w-4" />
                     <Link href="#">Monitor</Link>
+                </CommandItem>
+                <CommandItem>
+                    <ScreenShareIcon className="mr-2 h-4 w-4" />
+                    <Link href="#">NetXMS</Link>
                 </CommandItem>
             </CommandGroup>
             <CommandSeparator />

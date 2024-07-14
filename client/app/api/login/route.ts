@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import * as bcrypt from "bcrypt";
+import bcrypt from "bcrypt";
 
 interface LoginRequest {
     username: string;
