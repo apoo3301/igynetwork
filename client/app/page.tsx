@@ -1,9 +1,12 @@
 import Image from "next/image";
+import DashboardCard from "@/components/common/dash_card";
 
 export default function Home() {
   return (
     <>
-    <h1 className="text-2xl">IGY network monitor</h1>
+    <div className="flex flex-col md:flex-row justify-between gap-5 mb-5">
+      <DashboardCard />
+    </div>
     </>
   );
 }
