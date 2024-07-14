@@ -6,14 +6,28 @@ interface LoginRequest {
     password: string;
 }
 
-export async function Post(request:Request) {
-    const body:LoginRequest = await request.json();
-    const user = await prisma.user.findFirst({
-        where : { username: body.username }
-    })
+export async function POST(request: Request) {
+    const body: LoginRequest = await request.json();
+    const user = await prisma.user.findUnique({
+        where: {
+            username: body.username,
+        },
+    });
 
-    if (user && (await bcrypt.compare(body.password, user.password))){
-        const { password, ...userWithoutPassword } = user;
-        return new Response(JSON.stringify(userWithoutPassword));
-    } else return new Response(JSON.stringify(null));
+    if (!user) {
+        return new Response(JSON.stringify({ error: "User not found" }), {
+            status: 404,
+        });
+    }
+
+    const match = await bcrypt.compare(body.password, user.password);
+
+    if (!match) {
+        return new Response(JSON.stringify({ error: "Invalid password" }), {
+            status: 401,
+        });
+    }
+
+    const { password, ...result } = user;
+    return new Response(JSON.stringify(result));
 }
