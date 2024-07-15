@@ -1,3 +1,4 @@
+import { signJwtAccessToken } from "@/lib/jwt";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
 
@@ -8,26 +9,19 @@ interface LoginRequest {
 
 export async function POST(request: Request) {
     const body: LoginRequest = await request.json();
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findFirst({
         where: {
             username: body.username,
         },
     });
 
-    if (!user) {
-        return new Response(JSON.stringify({ error: "User not found" }), {
-            status: 404,
-        });
-    }
-
-    const match = await bcrypt.compare(body.password, user.password);
-
-    if (!match) {
-        return new Response(JSON.stringify({ error: "Invalid password" }), {
-            status: 401,
-        });
-    }
-
-    const { password, ...result } = user;
-    return new Response(JSON.stringify(result));
+    if (user && (await bcrypt.compare(body.password, user.password))) {
+        const { password, ...userWithoutPass } = user;
+        const accessToken = signJwtAccessToken(userWithoutPass);
+        const result = {
+            ...userWithoutPass,
+            accessToken,
+        };
+        return new Response(JSON.stringify(result));
+    } else return new Response(JSON.stringify(null));
 }
